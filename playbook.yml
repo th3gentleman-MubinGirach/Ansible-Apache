@@ -31,9 +31,9 @@
      source: pull
   - name:  copy file from controller node to managed node
     copy:
-     src: /root/Ansible-Apache/new.html
-     dest: /root/new.html
-  - name: start docker container with patting
+     src: /home/ec2-user/Ansible-Apache/new.html
+     dest: /home/ec2-user/new.html
+  - name: start docker container with PAT
     docker_container:
      name: httpdcontainer
      image: httpd
@@ -42,4 +42,4 @@
      state: started
   - name: copy file to container
     command:
-     "docker cp /root/new.html httpdcontainer:/usr/local/apache2/htdocs/"
+     "docker cp /home/ec2-user/new.html httpdcontainer:/usr/local/apache2/htdocs/"
