@@ -39,7 +39,7 @@
      state: started
   - name: Copy html file into container
     copy:
-     src: /root/ANSIBLE-APACHE MAGIC/new.html
+     src: /root/Ansible-Apache/new.html
      dest: httpdcontainer:/usr/local/apache2/htdocs/
 
  
