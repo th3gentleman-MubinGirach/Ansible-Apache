@@ -1,46 +1,45 @@
-
-- name: Docker task 
+- name: Docker task
   hosts: all
   tasks:
   - name: Uninstall existing Docker
     package:
      name: docker*
      state: absent
-  - name: Configure repo for docker 
+  - name: Configure repo for docker
     yum_repository:
      description: repo for docker
      name: docker-ce
      baseurl: https://download.docker.com/linux/centos/7/x86_64/stable/
-     gpgcheck: no   
+     gpgcheck: no
   - name: Install docker
     command:
-     yum install docker-ce --nobest -y 
+     yum install docker-ce --nobest -y
   - name: Start docker
-    service:      
+    service:
      name: docker
      state: started
-  - name: python installation as a prequisite 
-    package: 
+  - name: python installation as a prequisite
+    package:
      name: python3
-     state: present 
+     state: present
   - name: python for docker
     command:
      pip3 install docker
-  - name: docker pull httpd 
+  - name: docker pull httpd
     docker_image:
      name: httpd
      source: pull
+  - name:  copy file from controller node to managed node
+    copy:
+     src: /root/Ansible-Apache/new.html
+     dest: /root/new.html
   - name: start docker container with patting
-    docker_container: 
+    docker_container:
      name: httpdcontainer
-     image: httpd 
+     image: httpd
      ports:
       - "444:80"
      state: started
-  - name: Copy html file into container
-    copy:
-     src: /root/Ansible-Apache/new.html
-     dest: httpdcontainer:/usr/local/apache2/htdocs/
-
- 
-
+  - name: copy file to container
+    command:
+     "docker cp /root/new.html httpdcontainer:/usr/local/apache2/htdocs/"
